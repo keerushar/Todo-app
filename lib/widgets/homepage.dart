@@ -44,16 +44,8 @@ class _HomePageState extends State<HomePage> {
                           desc:
                               "Hello User, Welcome To Todo App where you can add your daily works to make your life more Productive",
                         ),
-                        TaskCardWidgets(
-                          title: "Get Started!",
-                          desc:
-                              "Hello User, Welcome To Todo App where you can add your daily works to make your life more Productive",
-                        ),
-                        TaskCardWidgets(
-                          title: "Get Started!",
-                          desc:
-                              "Hello User, Welcome To Todo App where you can add your daily works to make your life more Productive",
-                        ),
+                        TaskCardWidgets(),
+                        TaskCardWidgets(),
                       ],
                     ),
                   )
