@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/database_helper.dart';
 import 'package:todo/widgets/taskpage.dart';
 import 'package:todo/widgets/widgets.dart';
 
@@ -8,6 +9,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  DatabaseHelper _dbHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,21 +37,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Expanded(
-                    child: ListView(
-                      children: [
-                        TaskCardWidgets(
-                          title: "Get Started!",
-                          desc:
-                              "Hello User, Welcome To Todo App where you can add your daily works to make your life more Productive",
-                        ),
-                        TaskCardWidgets(
-                          title: "Get Started!",
-                          desc:
-                              "Hello User, Welcome To Todo App where you can add your daily works to make your life more Productive",
-                        ),
-                        TaskCardWidgets(),
-                        TaskCardWidgets(),
-                      ],
+                    child: FutureBuilder(
+                      initialData: [],
+                      future: _dbHelper.getTasks(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        return ScrollConfiguration(
+                          behavior: NoGlowBehaviour(),
+                          child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TaskPage(task: snapshot.data[index],)
+                                            )
+                                            );
+                                  },
+                                  child: TaskCardWidgets(
+                                    title: snapshot.data[index].title,
+                                  ),
+                                );
+                              }),
+                        );
+                      },
                     ),
                   )
                 ],
@@ -58,10 +73,10 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                        MaterialPageRoute(
-                        builder: (context) => TaskPage()
-                        ),
-                        );
+                      MaterialPageRoute(builder: (context) => TaskPage(task: null,)),
+                    ).then((value) {
+                      setState(() {});
+                    });
                   },
                   child: Container(
                     height: 40,
