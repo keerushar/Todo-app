@@ -65,14 +65,12 @@ class Todowidgets extends StatelessWidget {
               right: 12.0,
             ),
             decoration: BoxDecoration(
-                color: isChecked ? Colors.blueAccent : Colors.transparent,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: isChecked
-                    ? null
-                    : Border.all(
-                        width: 1.5,
-                        color: Colors.black,
-                      )),
+                border: Border.all(
+                  width: 1.5,
+                  color: Colors.black,
+                )),
             child: Image(
               image: AssetImage('assets/images/checked.png'),
             ),
@@ -94,7 +92,7 @@ class Todowidgets extends StatelessWidget {
 class NoGlowBehaviour extends ScrollBehavior {
   @override
   Widget buildViewportChrome(
-    BuildContext context, Widget child, AxisDirection axisDirection) {
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
