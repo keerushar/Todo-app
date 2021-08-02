@@ -9,8 +9,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
@@ -51,12 +49,15 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => TaskPage(task: snapshot.data[index],)
-                                            )
-                                            );
+                                            builder: (context) => TaskPage(
+                                                  task: snapshot.data[index],
+                                                ))).then((value) {
+                                      setState(() {});
+                                    });
                                   },
                                   child: TaskCardWidgets(
                                     title: snapshot.data[index].title,
+                                    desc: snapshot.data[index].desc,
                                   ),
                                 );
                               }),
@@ -73,7 +74,10 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TaskPage(task: null,)),
+                      MaterialPageRoute(
+                          builder: (context) => TaskPage(
+                                task: null,
+                              )),
                     ).then((value) {
                       setState(() {});
                     });
