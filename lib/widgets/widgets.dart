@@ -14,28 +14,36 @@ class TaskCardWidgets extends StatelessWidget {
         vertical: 32,
         horizontal: 24,
       ),
-      margin: EdgeInsets.only(bottom: 10),
+
+      margin: EdgeInsets.only(
+        bottom: 10
+        ),
+
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: Colors.black,
-          width: 1,
-        ),
         borderRadius: BorderRadius.circular(20),
       ),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title ?? "Unnamed title",
+          Text(
+            title ?? "Unnamed title",
               style: TextStyle(
-                color: Colors.black,
+                color: Color(0xFF211551),
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-              )),
-          Padding(padding: EdgeInsets.only(top: 10)),
-          Text(
+              ),
+              ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 10
+              ),
+          
+          child:Text(
             desc ?? "Unnamed Description",
             style: TextStyle(fontSize: 16, height: 1.5),
+          ),
           )
         ],
       ),
@@ -65,22 +73,25 @@ class Todowidgets extends StatelessWidget {
               right: 12.0,
             ),
             decoration: BoxDecoration(
-                color: Colors.transparent,
+                color: isChecked ? Color(0xFF7349FE) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(
+                border: isChecked ? null : Border.all(
                   width: 1.5,
-                  color: Colors.black,
-                )),
+                  color: Color(0xFF86829D),
+                ),
+                ),
             child: Image(
               image: AssetImage('assets/images/checked.png'),
             ),
           ),
-          Text(
-            text ?? 'Unnamed todo',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          Flexible(
+            child: Text(
+              text ?? 'Unnamed todo',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isChecked ? Color(0xFF211551) : Color(0xFF86829D),
+              ),
             ),
           ),
         ],

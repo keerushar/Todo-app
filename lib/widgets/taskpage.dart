@@ -85,7 +85,7 @@ class _TaskPageState extends State<TaskPage> {
                             onSubmitted: (value) async {
                               if (value != "") {
                                 if (widget.task == null) {
-                                  DatabaseHelper _dhelper = DatabaseHelper();
+                                  // DatabaseHelper _dhelper = DatabaseHelper();
                                   Task _newTask = Task(
                                     title: value,
                                   );
@@ -108,9 +108,11 @@ class _TaskPageState extends State<TaskPage> {
                             decoration: InputDecoration(
                                 hintText: 'Enter Task Title',
                                 border: InputBorder.none),
+
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 26.0,
                               fontWeight: FontWeight.bold,
+                              color: Color(0xFF211551),
                             ),
                           ),
                         ),
@@ -119,24 +121,30 @@ class _TaskPageState extends State<TaskPage> {
                   ),
                   Visibility(
                     visible: _contentVisible,
-                    child: TextField(
-                      focusNode: _descFocus,
-                      onSubmitted: (value) async {
-                        if (value != "") {
-                          if (_taskId != 0) {
-                            await _dhelper.updateTaskDesc(_taskId, value);
-                            _taskDesc = value;
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 12.0,
+                      ),
+                      child: TextField(
+                        focusNode: _descFocus,
+                        onSubmitted: (value) async {
+                          if (value != "") {
+                            if (_taskId != 0) {
+                              await _dhelper.updateTaskDesc(_taskId, value);
+                              _taskDesc = value;
+                            }
                           }
                           _todoFocus!.requestFocus();
-                        }
-                      },
-                      controller: TextEditingController()..text = _taskDesc,
-                      decoration: InputDecoration(
+                        },
+                        controller: TextEditingController()..text = _taskDesc,
+                        decoration: InputDecoration(
                           hintText: 'Enter description for the task....',
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 24,
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Visibility(
@@ -149,12 +157,28 @@ class _TaskPageState extends State<TaskPage> {
                               child: ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (context, index) {
-                                    return Todowidgets(
-                                      text: snapshot.data[index].title,
-                                      isChecked:
-                                          snapshot.data[index].isChecked == 0
-                                              ? false
-                                              : true,
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        print('kiran is $_taskId');
+                                        // print(
+                                        // "todo done: ${snapshot.data[index].isChecked}");
+                                        if (snapshot.data[index].isChecked ==
+                                            0) {
+                                          await _dhelper.updateTodoDone(
+                                              snapshot.data[index].id, 1);
+                                        } else {
+                                          await _dhelper.updateTodoDone(
+                                              snapshot.data[index].id, 0);
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Todowidgets(
+                                        text: snapshot.data[index].title,
+                                        isChecked:
+                                            snapshot.data[index].isChecked == 0
+                                                ? false
+                                                : true,
+                                      ),
                                     );
                                   }));
                         }),
@@ -162,7 +186,7 @@ class _TaskPageState extends State<TaskPage> {
                   Visibility(
                     visible: _contentVisible,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(horizontal: 24),
                       child: Row(
                         children: [
                           Container(
@@ -176,7 +200,7 @@ class _TaskPageState extends State<TaskPage> {
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
                                   width: 1.5,
-                                  color: Colors.black,
+                                  color: Color(0xFF86829D),
                                 )),
                             child: Image(
                               image: AssetImage('assets/images/checked.png'),
@@ -220,21 +244,18 @@ class _TaskPageState extends State<TaskPage> {
                   bottom: 24,
                   right: 24,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TaskPage(
-                                  task: null,
-                                )),
-                      );
+                    onTap: () async {
+                      if (_taskId != 0) {
+                        await _dhelper.deleteTask(_taskId);
+                        Navigator.pop(context);
+                      }
                     },
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: 60,
+                      width: 60,
                       decoration: BoxDecoration(
-                        color: Colors.pinkAccent,
-                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xFFFE3577),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Image(
                         image: AssetImage('assets/images/trash.png'),

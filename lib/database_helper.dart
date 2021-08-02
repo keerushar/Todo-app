@@ -75,4 +75,16 @@ class DatabaseHelper {
       );
     });
   }
+
+  Future<void> updateTodoDone(int id, int isChecked) async {
+    Database _db = await database();
+    await _db.rawUpdate(
+        "UPDATE todos SET isChecked = '$isChecked' WHERE id = '$id'");
+  }
+
+  Future<void> deleteTask(int id) async {
+    Database _db = await database();
+    await _db.rawDelete("DELETE FROM tasks WHERE id = '$id'");
+    await _db.rawDelete("DELETE FROM todos WHERE taskId = '$id'");
+  }
 }
